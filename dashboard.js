@@ -32,6 +32,7 @@ function filterIssues(filter) {
         filteredIssues = allIssues.filter(issue => issue.status === 'closed');
     }
     
+    issueCount.textContent = filteredIssues.length;
     renderIssues(filteredIssues);
 }
 
