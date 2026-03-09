@@ -193,6 +193,12 @@ modalOverlay.addEventListener('click', (e) => {
     }
 });
 
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modalOverlay.classList.contains('active')) {
+        closeModal();
+    }
+});
+
 async function searchIssues(searchText) {
     if (!searchText || searchText.trim() === '') {
         isSearchMode = false;
