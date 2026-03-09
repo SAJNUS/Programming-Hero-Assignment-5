@@ -63,8 +63,11 @@ function createIssueCard(issue) {
     const statusIcon = status === 'open' ? 'Open-Status.png' : 'Closed- Status .png';
     const title = issue.title || 'Untitled Issue';
     const description = issue.description || 'No description available';
+    const id = issue.id || 'N/A';
     const author = issue.author || 'unknown';
+    const assignee = issue.assignee || '';
     const createdAt = issue.createdAt || new Date().toISOString();
+    const updatedAt = issue.updatedAt || issue.createdAt || new Date().toISOString();
     
     let labelsHTML = '';
     if (issue.labels && issue.labels.length > 0) {
@@ -90,8 +93,15 @@ function createIssueCard(issue) {
             ${labelsHTML}
         </div>
         <div class="issue-footer">
-            <span>by ${author}</span>
-            <span>${formatDate(createdAt)}</span>
+            <div class="issue-footer-id">#${id}</div>
+            <div class="issue-footer-row">
+                <span><strong>Author:</strong> ${author}</span>
+                <span><strong>Created:</strong> ${formatDate(createdAt)}</span>
+            </div>
+            <div class="issue-footer-row">
+                <span><strong>Assignee:</strong> ${assignee}</span>
+                <span><strong>Updated:</strong> ${formatDate(updatedAt)}</span>
+            </div>
         </div>
     `;
     
@@ -175,10 +185,8 @@ async function openIssueModal(id) {
             });
         }
         
-        // Set assignee
-        document.getElementById('modal-author').textContent = issue.assignee || issue.author;
+        document.getElementById('modal-author').textContent = issue.assignee || '';
         
-        // Set priority badge
         const priorityBadge = document.getElementById('modal-priority');
         priorityBadge.textContent = issue.priority.toUpperCase();
         priorityBadge.className = `modal-priority-badge priority-${issue.priority.toLowerCase()}`;
