@@ -155,11 +155,10 @@ async function openIssueModal(id) {
         document.getElementById('modal-title').textContent = issue.title;
         document.getElementById('modal-description').textContent = issue.description;
         
-        // Set status badge
         const statusBadge = document.getElementById('modal-status');
         statusBadge.textContent = issue.status === 'open' ? 'Opened' : 'Closed';
+        statusBadge.className = `modal-status-badge status-${issue.status}`;
         
-        // Set meta information (author and created date)
         const metaInfo = document.getElementById('modal-meta-info');
         metaInfo.textContent = `Opened by ${issue.author} • ${formatDate(issue.createdAt)}`;
         

@@ -465,9 +465,16 @@ body {
     border-radius: 20px;
     font-size: 12px;
     font-weight: 600;
-    background: #28a745;
     color: white;
     text-transform: capitalize;
+}
+
+.modal-status-badge.status-open {
+    background: #28a745;
+}
+
+.modal-status-badge.status-closed {
+    background: #5a32ea;
 }
 
 .modal-meta-text {
