@@ -170,19 +170,8 @@ async function openIssueModal(id) {
         if (issue.labels && issue.labels.length > 0) {
             issue.labels.forEach(label => {
                 const labelTag = document.createElement('span');
-                labelTag.className = 'modal-tag';
-                
-                // Add emoji prefix based on label type
-                if (label.toLowerCase().includes('bug')) {
-                    labelTag.className += ' tag-bug';
-                    labelTag.textContent = '🐛 ' + label.toUpperCase();
-                } else if (label.toLowerCase().includes('help')) {
-                    labelTag.className += ' tag-help-wanted';
-                    labelTag.textContent = '⚠️ ' + label.toUpperCase();
-                } else {
-                    labelTag.textContent = label.toUpperCase();
-                }
-                
+                labelTag.className = `modal-tag ${getLabelClass(label)}`;
+                labelTag.textContent = label.toUpperCase();
                 tagsContainer.appendChild(labelTag);
             });
         }
