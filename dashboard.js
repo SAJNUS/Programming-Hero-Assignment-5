@@ -38,27 +38,38 @@ function formatDate(dateString) {
 
 function createIssueCard(issue) {
     const card = document.createElement('div');
-    const statusClass = issue.status.toLowerCase();
-    const priorityClass = issue.priority.toLowerCase();
-    const statusIcon = issue.status === 'open' ? 'Open-Status.png' : 'Closed- Status .png';
+    const status = issue.status || 'open';
+    const priority = issue.priority || 'medium';
+    const statusClass = status.toLowerCase();
+    const priorityClass = priority.toLowerCase();
+    const statusIcon = status === 'open' ? 'Open-Status.png' : 'Closed- Status .png';
+    const title = issue.title || 'Untitled Issue';
+    const description = issue.description || 'No description available';
+    const label = issue.label || 'general';
+    const author = issue.author || 'unknown';
+    const createdAt = issue.createdAt || new Date().toISOString();
     
     card.className = `issue-card status-${statusClass}`;
+    card.style.cursor = 'pointer';
+    card.dataset.issueId = issue._id;
     
     card.innerHTML = `
         <div class="issue-header">
             <img src="assets/${statusIcon}" alt="Status" class="issue-icon">
-            <span class="priority-badge priority-${priorityClass}">${issue.priority.toUpperCase()}</span>
+            <span class="priority-badge priority-${priorityClass}">${priority.toUpperCase()}</span>
         </div>
-        <h3 class="issue-title">${issue.title}</h3>
-        <p class="issue-description">${issue.description}</p>
+        <h3 class="issue-title">${title}</h3>
+        <p class="issue-description">${description}</p>
         <div class="issue-tags">
-            <span class="tag tag-bug">${issue.label.toUpperCase()}</span>
+            <span class="tag tag-bug">${label.toUpperCase()}</span>
         </div>
         <div class="issue-footer">
-            <span>by ${issue.author}</span>
-            <span>${formatDate(issue.createdAt)}</span>
+            <span>by ${author}</span>
+            <span>${formatDate(createdAt)}</span>
         </div>
     `;
+    
+    card.addEventListener('click', () => openModal(issue._id));
     
     return card;
 }
@@ -86,9 +97,9 @@ async function fetchIssues() {
     
     try {
         const response = await fetch('https://phi-lab-server.vercel.app/api/v1/lab/issues');
-        const data = await response.json();
+        const result = await response.json();
         
-        allIssues = data;
+        allIssues = result.data;
         issueCount.textContent = allIssues.length;
         
         filterIssues(currentFilter);
@@ -99,5 +110,54 @@ async function fetchIssues() {
         issuesGrid.innerHTML = '<p style="text-align: center; color: #6a737d;">Failed to load issues. Please try again later.</p>';
     }
 }
+
+const modalOverlay = document.getElementById('modal-overlay');
+const modalCloseBtn = document.getElementById('modal-close-btn');
+
+async function openModal(issueId) {
+    modalOverlay.classList.add('active');
+    
+    try {
+        const response = await fetch(`https://phi-lab-server.vercel.app/api/v1/lab/issue/${issueId}`);
+        const issue = await response.json();
+        
+        const title = issue.title || 'Untitled Issue';
+        const description = issue.description || 'No description available';
+        const status = issue.status || 'open';
+        const label = issue.label || 'general';
+        const priority = issue.priority || 'medium';
+        const author = issue.author || 'unknown';
+        
+        document.getElementById('modal-title').textContent = title;
+        document.getElementById('modal-description').textContent = description;
+        
+        const statusBadge = document.getElementById('modal-status');
+        statusBadge.textContent = status;
+        statusBadge.className = `modal-status-badge status-${status.toLowerCase()}`;
+        
+        document.getElementById('modal-label').textContent = label.toUpperCase();
+        document.getElementById('modal-priority-tag').textContent = `${priority.toUpperCase()} PRIORITY`;
+        
+        document.getElementById('modal-author').textContent = author;
+        
+        const priorityBadge = document.getElementById('modal-priority');
+        priorityBadge.textContent = priority.toUpperCase();
+        priorityBadge.className = `modal-priority-badge priority-${priority.toLowerCase()}`;
+    } catch (error) {
+        console.error('Error fetching issue details:', error);
+    }
+}
+
+function closeModal() {
+    modalOverlay.classList.remove('active');
+}
+
+modalCloseBtn.addEventListener('click', closeModal);
+
+modalOverlay.addEventListener('click', (e) => {
+    if (e.target === modalOverlay) {
+        closeModal();
+    }
+});
 
 fetchIssues();

@@ -54,6 +54,35 @@
         </div>
     </div>
 
+    <div class="modal-overlay" id="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-title"></h2>
+                <div class="modal-badges">
+                    <span class="modal-status-badge" id="modal-status"></span>
+                </div>
+            </div>
+            <div class="modal-tags">
+                <span class="modal-tag" id="modal-label"></span>
+                <span class="modal-tag" id="modal-priority-tag"></span>
+            </div>
+            <div class="modal-body">
+                <p id="modal-description"></p>
+            </div>
+            <div class="modal-info">
+                <div class="modal-info-item">
+                    <span class="modal-info-label">Assignee:</span>
+                    <span class="modal-info-value" id="modal-author"></span>
+                </div>
+                <div class="modal-info-item">
+                    <span class="modal-info-label">Priority:</span>
+                    <span class="modal-priority-badge" id="modal-priority"></span>
+                </div>
+            </div>
+            <button class="modal-close-btn" id="modal-close-btn">Close</button>
+        </div>
+    </div>
+
     <script src="dashboard.js"></script>
 </body>
 </html>
