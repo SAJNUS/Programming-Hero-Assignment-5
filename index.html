@@ -10,22 +10,29 @@
     <div class="container">
         <div class="card">
             <img src="assets/github-logo.png" alt="GitHub Logo" class="logo">
-            <h1 class="title">GitHub Issue Tracker</h1>
-            <p class="subtitle">Track and manage project issues easily</p>
+            <h1 class="title">GitHub Issues Tracker</h1>
+            <p class="subtitle">Sign in to manage your issues</p>
             
             <form id="loginForm" class="form">
                 <div class="input-group">
-                    <input type="text" id="username" placeholder="Username" required>
+                    <label for="username">Username</label>
+                    <input type="text" id="username" placeholder="Enter Username" required>
+                    <p class="default-text">Default: admin</p>
                 </div>
                 <div class="input-group">
-                    <input type="password" id="password" placeholder="Password" required>
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Enter Password" required>
+                    <p class="default-text">Default: admin123</p>
                 </div>
                 <button type="submit" class="btn-signin">Sign In</button>
             </form>
             
+            <div class="divider">OR</div>
+            
             <div class="demo-credentials">
-                <p>Username: admin</p>
-                <p>Password: admin123</p>
+                <p class="demo-header">Demo Credentials:</p>
+                <p><strong>Username:</strong> admin</p>
+                <p><strong>Password:</strong> admin123</p>
             </div>
         </div>
     </div>

@@ -6,7 +6,7 @@
 
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: #f5f5f5;
     min-height: 100vh;
     display: flex;
     justify-content: center;
@@ -23,31 +23,31 @@ body {
 
 .card {
     background: white;
-    padding: 40px;
-    border-radius: 16px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    padding: 50px 45px;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     width: 100%;
-    max-width: 420px;
+    max-width: 440px;
     text-align: center;
 }
 
 .logo {
-    width: 80px;
-    height: 80px;
-    margin-bottom: 20px;
+    width: 70px;
+    height: 70px;
+    margin-bottom: 24px;
 }
 
 .title {
-    font-size: 28px;
+    font-size: 26px;
     font-weight: 600;
-    color: #333;
-    margin-bottom: 10px;
+    color: #24292e;
+    margin-bottom: 8px;
 }
 
 .subtitle {
-    font-size: 15px;
-    color: #666;
-    margin-bottom: 30px;
+    font-size: 14px;
+    color: #6a737d;
+    margin-bottom: 32px;
     line-height: 1.5;
 }
 
@@ -56,59 +56,93 @@ body {
 }
 
 .input-group {
-    margin-bottom: 16px;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.input-group label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    color: #24292e;
+    margin-bottom: 8px;
 }
 
 input[type="text"],
 input[type="password"] {
     width: 100%;
-    padding: 14px 16px;
-    border: 2px solid #e1e4e8;
-    border-radius: 8px;
-    font-size: 15px;
-    transition: all 0.3s ease;
+    padding: 12px 14px;
+    border: 1px solid #d1d5da;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: all 0.2s ease;
     outline: none;
 }
 
 input[type="text"]:focus,
 input[type="password"]:focus {
-    border-color: #667eea;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    border-color: #0366d6;
+    box-shadow: 0 0 0 3px rgba(3, 102, 214, 0.1);
+}
+
+.default-text {
+    font-size: 13px;
+    color: #6f42c1;
+    margin-top: 6px;
+    margin-bottom: 0;
 }
 
 .btn-signin {
     width: 100%;
-    padding: 14px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 12px;
+    background: #5a32ea;
     color: white;
     border: none;
-    border-radius: 8px;
-    font-size: 16px;
+    border-radius: 6px;
+    font-size: 15px;
     font-weight: 600;
     cursor: pointer;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    margin-top: 8px;
+    transition: background 0.2s ease;
+    margin-top: 4px;
 }
 
 .btn-signin:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    background: #4a28c9;
 }
 
 .btn-signin:active {
-    transform: translateY(0);
+    background: #3a1fa9;
+}
+
+.divider {
+    margin: 20px 0;
+    font-size: 13px;
+    color: #6a737d;
+    font-weight: 500;
 }
 
 .demo-credentials {
-    margin-top: 24px;
-    padding-top: 20px;
-    border-top: 1px solid #e1e4e8;
+    margin-top: 0;
+    padding: 16px;
+    background: #f6f8fa;
+    border-radius: 6px;
     font-size: 13px;
-    color: #666;
+    color: #24292e;
+    text-align: center;
+}
+
+.demo-credentials .demo-header {
+    color: #6a737d;
+    margin-bottom: 8px;
+    font-weight: 500;
 }
 
 .demo-credentials p {
     margin: 4px 0;
+}
+
+.demo-credentials strong {
+    font-weight: 600;
 }
 
 @media (max-width: 480px) {
