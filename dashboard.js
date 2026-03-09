@@ -53,9 +53,17 @@ function createIssueCard(issue) {
     const statusIcon = status === 'open' ? 'Open-Status.png' : 'Closed- Status .png';
     const title = issue.title || 'Untitled Issue';
     const description = issue.description || 'No description available';
-    const label = issue.label || 'general';
     const author = issue.author || 'unknown';
     const createdAt = issue.createdAt || new Date().toISOString();
+    
+    let labelsHTML = '';
+    if (issue.labels && issue.labels.length > 0) {
+        labelsHTML = issue.labels.map(label => 
+            `<span class="tag tag-bug">${label.toUpperCase()}</span>`
+        ).join('');
+    } else {
+        labelsHTML = '<span class="tag tag-bug">GENERAL</span>';
+    }
     
     card.className = `issue-card status-${statusClass}`;
     card.style.cursor = 'pointer';
@@ -69,7 +77,7 @@ function createIssueCard(issue) {
         <h3 class="issue-title">${title}</h3>
         <p class="issue-description">${description}</p>
         <div class="issue-tags">
-            <span class="tag tag-bug">${label.toUpperCase()}</span>
+            ${labelsHTML}
         </div>
         <div class="issue-footer">
             <span>by ${author}</span>
