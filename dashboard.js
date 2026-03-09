@@ -58,7 +58,7 @@ function createIssueCard(issue) {
     
     card.className = `issue-card status-${statusClass}`;
     card.style.cursor = 'pointer';
-    card.dataset.issueId = issue._id;
+    card.dataset.issueId = issue.id;
     
     card.innerHTML = `
         <div class="issue-header">
@@ -76,7 +76,7 @@ function createIssueCard(issue) {
         </div>
     `;
     
-    card.addEventListener('click', () => openModal(issue._id));
+    card.addEventListener('click', () => openIssueModal(issue.id));
     
     return card;
 }
@@ -121,35 +121,61 @@ async function fetchIssues() {
 const modalOverlay = document.getElementById('modal-overlay');
 const modalCloseBtn = document.getElementById('modal-close-btn');
 
-async function openModal(issueId) {
+async function openIssueModal(id) {
     modalOverlay.classList.add('active');
     
     try {
-        const response = await fetch(`https://phi-lab-server.vercel.app/api/v1/lab/issue/${issueId}`);
-        const issue = await response.json();
+        // Fetch issue details from API
+        const response = await fetch(`https://phi-lab-server.vercel.app/api/v1/lab/issue/${id}`);
+        const result = await response.json();
         
-        const title = issue.title || 'Untitled Issue';
-        const description = issue.description || 'No description available';
-        const status = issue.status || 'open';
-        const label = issue.label || 'general';
-        const priority = issue.priority || 'medium';
-        const author = issue.author || 'unknown';
+        // Extract issue data from response.data
+        const issue = result.data;
         
-        document.getElementById('modal-title').textContent = title;
-        document.getElementById('modal-description').textContent = description;
+        // Populate modal with issue data
+        document.getElementById('modal-title').textContent = issue.title;
+        document.getElementById('modal-description').textContent = issue.description;
         
+        // Set status badge
         const statusBadge = document.getElementById('modal-status');
-        statusBadge.textContent = status;
-        statusBadge.className = `modal-status-badge status-${status.toLowerCase()}`;
+        statusBadge.textContent = issue.status === 'open' ? 'Opened' : 'Closed';
         
-        document.getElementById('modal-label').textContent = label.toUpperCase();
-        document.getElementById('modal-priority-tag').textContent = `${priority.toUpperCase()} PRIORITY`;
+        // Set meta information (author and created date)
+        const metaInfo = document.getElementById('modal-meta-info');
+        metaInfo.textContent = `Opened by ${issue.author} • ${formatDate(issue.createdAt)}`;
         
-        document.getElementById('modal-author').textContent = author;
+        // Render labels dynamically
+        const tagsContainer = document.getElementById('modal-tags');
+        tagsContainer.innerHTML = '';
         
+        if (issue.labels && issue.labels.length > 0) {
+            issue.labels.forEach(label => {
+                const labelTag = document.createElement('span');
+                labelTag.className = 'modal-tag';
+                
+                // Add emoji prefix based on label type
+                if (label.toLowerCase().includes('bug')) {
+                    labelTag.className += ' tag-bug';
+                    labelTag.textContent = '🐛 ' + label.toUpperCase();
+                } else if (label.toLowerCase().includes('help')) {
+                    labelTag.className += ' tag-help-wanted';
+                    labelTag.textContent = '⚠️ ' + label.toUpperCase();
+                } else {
+                    labelTag.textContent = label.toUpperCase();
+                }
+                
+                tagsContainer.appendChild(labelTag);
+            });
+        }
+        
+        // Set assignee
+        document.getElementById('modal-author').textContent = issue.assignee || issue.author;
+        
+        // Set priority badge
         const priorityBadge = document.getElementById('modal-priority');
-        priorityBadge.textContent = priority.toUpperCase();
-        priorityBadge.className = `modal-priority-badge priority-${priority.toLowerCase()}`;
+        priorityBadge.textContent = issue.priority.toUpperCase();
+        priorityBadge.className = `modal-priority-badge priority-${issue.priority.toLowerCase()}`;
+        
     } catch (error) {
         console.error('Error fetching issue details:', error);
     }

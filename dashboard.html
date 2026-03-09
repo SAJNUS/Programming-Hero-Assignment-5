@@ -57,30 +57,29 @@
 
     <div class="modal-overlay" id="modal-overlay">
         <div class="modal-content">
-            <div class="modal-header">
-                <h2 id="modal-title"></h2>
-                <div class="modal-badges">
-                    <span class="modal-status-badge" id="modal-status"></span>
-                </div>
+            <h2 id="modal-title"></h2>
+            <div class="modal-meta">
+                <span class="modal-status-badge" id="modal-status"></span>
+                <span class="modal-meta-text" id="modal-meta-info"></span>
             </div>
-            <div class="modal-tags">
-                <span class="modal-tag" id="modal-label"></span>
-                <span class="modal-tag" id="modal-priority-tag"></span>
+            <div class="modal-tags" id="modal-tags">
             </div>
             <div class="modal-body">
                 <p id="modal-description"></p>
             </div>
             <div class="modal-info">
-                <div class="modal-info-item">
-                    <span class="modal-info-label">Assignee:</span>
-                    <span class="modal-info-value" id="modal-author"></span>
+                <div class="modal-info-left">
+                    <div class="modal-info-label">Assignee:</div>
+                    <div class="modal-info-value" id="modal-author"></div>
                 </div>
-                <div class="modal-info-item">
-                    <span class="modal-info-label">Priority:</span>
+                <div class="modal-info-right">
+                    <div class="modal-info-label">Priority:</div>
                     <span class="modal-priority-badge" id="modal-priority"></span>
                 </div>
             </div>
-            <button class="modal-close-btn" id="modal-close-btn">Close</button>
+            <div class="modal-footer">
+                <button class="modal-close-btn" id="modal-close-btn">Close</button>
+            </div>
         </div>
     </div>
 
