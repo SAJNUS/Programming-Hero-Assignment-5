@@ -3,9 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Assignment 5</title>
+    <title>GitHub Issue Tracker - Login</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>hello world</h1>
+    <div class="container">
+        <div class="card">
+            <img src="assets/github-logo.png" alt="GitHub Logo" class="logo">
+            <h1 class="title">GitHub Issue Tracker</h1>
+            <p class="subtitle">Track and manage project issues easily</p>
+            
+            <form id="loginForm" class="form">
+                <div class="input-group">
+                    <input type="text" id="username" placeholder="Username" required>
+                </div>
+                <div class="input-group">
+                    <input type="password" id="password" placeholder="Password" required>
+                </div>
+                <button type="submit" class="btn-signin">Sign In</button>
+            </form>
+            
+            <div class="demo-credentials">
+                <p>Username: admin</p>
+                <p>Password: admin123</p>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
 </body>
 </html>
