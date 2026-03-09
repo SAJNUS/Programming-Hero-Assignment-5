@@ -365,6 +365,26 @@ body {
     color: #ffa502;
 }
 
+.tag-enhancement {
+    background: #e5f7e5;
+    color: #22c55e;
+}
+
+.tag-documentation {
+    background: #e5f0ff;
+    color: #3b82f6;
+}
+
+.tag-good-first-issue {
+    background: #f3e5ff;
+    color: #a855f7;
+}
+
+.tag-default {
+    background: #f0f0f0;
+    color: #6a737d;
+}
+
 .issue-footer {
     display: flex;
     justify-content: space-between;

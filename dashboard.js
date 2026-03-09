@@ -44,6 +44,16 @@ function formatDate(dateString) {
     return `${month}/${day}/${year}`;
 }
 
+function getLabelClass(label) {
+    const labelLower = label.toLowerCase();
+    if (labelLower.includes('bug')) return 'tag-bug';
+    if (labelLower.includes('help')) return 'tag-help-wanted';
+    if (labelLower.includes('enhancement')) return 'tag-enhancement';
+    if (labelLower.includes('documentation')) return 'tag-documentation';
+    if (labelLower.includes('good first issue') || labelLower.includes('good-first-issue')) return 'tag-good-first-issue';
+    return 'tag-default';
+}
+
 function createIssueCard(issue) {
     const card = document.createElement('div');
     const status = issue.status || 'open';
@@ -59,10 +69,10 @@ function createIssueCard(issue) {
     let labelsHTML = '';
     if (issue.labels && issue.labels.length > 0) {
         labelsHTML = issue.labels.map(label => 
-            `<span class="tag tag-bug">${label.toUpperCase()}</span>`
+            `<span class="tag ${getLabelClass(label)}">${label.toUpperCase()}</span>`
         ).join('');
     } else {
-        labelsHTML = '<span class="tag tag-bug">GENERAL</span>';
+        labelsHTML = '<span class="tag tag-default">GENERAL</span>';
     }
     
     card.className = `issue-card status-${statusClass}`;
