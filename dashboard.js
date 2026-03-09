@@ -2,9 +2,12 @@ const tabButtons = document.querySelectorAll('.tab-btn');
 const issuesGrid = document.getElementById('issues-grid');
 const issueCount = document.getElementById('issue-count');
 const loadingSpinner = document.getElementById('loading-spinner');
+const searchInput = document.getElementById('search-input');
+const searchButton = document.getElementById('btn-search');
 
 let allIssues = [];
 let currentFilter = 'all';
+let isSearchMode = false;
 
 tabButtons.forEach(button => {
     button.addEventListener('click', () => {
@@ -17,6 +20,10 @@ tabButtons.forEach(button => {
 });
 
 function filterIssues(filter) {
+    if (isSearchMode) {
+        return;
+    }
+    
     let filteredIssues = allIssues;
     
     if (filter === 'open') {
@@ -157,6 +164,43 @@ modalCloseBtn.addEventListener('click', closeModal);
 modalOverlay.addEventListener('click', (e) => {
     if (e.target === modalOverlay) {
         closeModal();
+    }
+});
+
+async function searchIssues(searchText) {
+    if (!searchText || searchText.trim() === '') {
+        isSearchMode = false;
+        filterIssues(currentFilter);
+        return;
+    }
+    
+    showLoading();
+    isSearchMode = true;
+    
+    try {
+        const response = await fetch(`https://phi-lab-server.vercel.app/api/v1/lab/issues/search?q=${encodeURIComponent(searchText)}`);
+        const result = await response.json();
+        
+        const searchResults = result.data || [];
+        issueCount.textContent = searchResults.length;
+        renderIssues(searchResults);
+        hideLoading();
+    } catch (error) {
+        console.error('Error searching issues:', error);
+        hideLoading();
+        issuesGrid.innerHTML = '<p style="text-align: center; color: #6a737d;">Failed to search issues. Please try again later.</p>';
+    }
+}
+
+searchButton.addEventListener('click', () => {
+    const searchText = searchInput.value;
+    searchIssues(searchText);
+});
+
+searchInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+        const searchText = searchInput.value;
+        searchIssues(searchText);
     }
 });
 

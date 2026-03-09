@@ -61,6 +61,23 @@ body {
     border-color: #0366d6;
 }
 
+.btn-search {
+    padding: 8px 16px;
+    background: white;
+    color: #24292e;
+    border: 1px solid #d1d5da;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    white-space: nowrap;
+}
+
+.btn-search:hover {
+    background: #f6f8fa;
+}
+
 .btn-new-issue {
     padding: 8px 16px;
     background: #5a32ea;
