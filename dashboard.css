@@ -213,11 +213,11 @@ body {
 }
 
 .status-closed .status-dot {
-    background: #d73a49;
+    background: #5a32ea;
 }
 
 .status-closed {
-    color: #d73a49;
+    color: #5a32ea;
 }
 
 .loading-spinner {
