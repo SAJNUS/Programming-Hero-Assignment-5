@@ -1,85 +1,62 @@
 const tabButtons = document.querySelectorAll('.tab-btn');
 const issuesGrid = document.getElementById('issues-grid');
 const issueCount = document.getElementById('issue-count');
+const loadingSpinner = document.getElementById('loading-spinner');
+
+let allIssues = [];
+let currentFilter = 'all';
 
 tabButtons.forEach(button => {
     button.addEventListener('click', () => {
         tabButtons.forEach(btn => btn.classList.remove('active'));
         button.classList.add('active');
         
-        const selectedTab = button.dataset.tab;
-        filterIssues(selectedTab);
+        currentFilter = button.dataset.tab;
+        filterIssues(currentFilter);
     });
 });
 
 function filterIssues(filter) {
-    console.log('Filtering issues by:', filter);
+    let filteredIssues = allIssues;
+    
+    if (filter === 'open') {
+        filteredIssues = allIssues.filter(issue => issue.status === 'open');
+    } else if (filter === 'closed') {
+        filteredIssues = allIssues.filter(issue => issue.status === 'closed');
+    }
+    
+    renderIssues(filteredIssues);
 }
 
-const sampleIssues = [
-    {
-        id: 1,
-        title: 'Fix Navigation Menu On Mobile Devices',
-        description: 'The navigation menu doesn\'t collapse properly on mobile devices.',
-        priority: 'high',
-        status: 'open',
-        icon: 'Open-Status.png',
-        tags: ['bug', 'help-wanted'],
-        author: 'by john_doe',
-        date: '1/15/2024'
-    },
-    {
-        id: 2,
-        title: 'Fix Navigation Menu On Mobile Devices',
-        description: 'The navigation menu doesn\'t collapse properly on mobile devices.',
-        priority: 'medium',
-        status: 'open',
-        icon: 'Open-Status.png',
-        tags: ['bug', 'help-wanted'],
-        author: 'by john_doe',
-        date: '1/15/2024'
-    },
-    {
-        id: 3,
-        title: 'Fix Navigation Menu On Mobile Devices',
-        description: 'The navigation menu doesn\'t collapse properly on mobile devices.',
-        priority: 'low',
-        status: 'closed',
-        icon: 'Closed- Status .png',
-        tags: ['bug', 'help-wanted'],
-        author: 'by john_doe',
-        date: '1/15/2024'
-    },
-    {
-        id: 4,
-        title: 'Fix Navigation Menu On Mobile Devices',
-        description: 'The navigation menu doesn\'t collapse properly on mobile devices.',
-        priority: 'high',
-        status: 'open',
-        icon: 'Open-Status.png',
-        tags: ['bug', 'help-wanted'],
-        author: 'by john_doe',
-        date: '1/15/2024'
-    }
-];
+function formatDate(dateString) {
+    const date = new Date(dateString);
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    const year = date.getFullYear();
+    return `${month}/${day}/${year}`;
+}
 
 function createIssueCard(issue) {
     const card = document.createElement('div');
-    card.className = `issue-card priority-${issue.priority}`;
+    const statusClass = issue.status.toLowerCase();
+    const priorityClass = issue.priority.toLowerCase();
+    const statusIcon = issue.status === 'open' ? 'Open-Status.png' : 'Closed- Status .png';
+    
+    card.className = `issue-card status-${statusClass}`;
     
     card.innerHTML = `
         <div class="issue-header">
-            <img src="assets/${issue.icon}" alt="Status" class="issue-icon">
-            <span class="priority-badge priority-${issue.priority}">${issue.priority.toUpperCase()}</span>
+            <img src="assets/${statusIcon}" alt="Status" class="issue-icon">
+            <span class="priority-badge priority-${priorityClass}">${issue.priority.toUpperCase()}</span>
         </div>
         <h3 class="issue-title">${issue.title}</h3>
         <p class="issue-description">${issue.description}</p>
         <div class="issue-tags">
-            ${issue.tags.map(tag => `<span class="tag tag-${tag}">${tag.toUpperCase().replace('-', ' ')}</span>`).join('')}
+            <span class="tag tag-bug">${issue.label.toUpperCase()}</span>
         </div>
         <div class="issue-footer">
-            <span>${issue.author}</span>
-            <span>${issue.date}</span>
+            <span>by ${issue.author}</span>
+            <span>${formatDate(issue.createdAt)}</span>
         </div>
     `;
     
@@ -94,4 +71,33 @@ function renderIssues(issues) {
     });
 }
 
-renderIssues(sampleIssues);
+function showLoading() {
+    loadingSpinner.classList.remove('hidden');
+    issuesGrid.style.display = 'none';
+}
+
+function hideLoading() {
+    loadingSpinner.classList.add('hidden');
+    issuesGrid.style.display = 'grid';
+}
+
+async function fetchIssues() {
+    showLoading();
+    
+    try {
+        const response = await fetch('https://phi-lab-server.vercel.app/api/v1/lab/issues');
+        const data = await response.json();
+        
+        allIssues = data;
+        issueCount.textContent = allIssues.length;
+        
+        filterIssues(currentFilter);
+        hideLoading();
+    } catch (error) {
+        console.error('Error fetching issues:', error);
+        hideLoading();
+        issuesGrid.innerHTML = '<p style="text-align: center; color: #6a737d;">Failed to load issues. Please try again later.</p>';
+    }
+}
+
+fetchIssues();

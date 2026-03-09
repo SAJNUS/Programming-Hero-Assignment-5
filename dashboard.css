@@ -190,6 +190,38 @@ body {
     color: #d73a49;
 }
 
+.loading-spinner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    gap: 16px;
+}
+
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #5a32ea;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loading-spinner p {
+    color: #6a737d;
+    font-size: 14px;
+}
+
+.loading-spinner.hidden {
+    display: none;
+}
+
 .issues-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -201,13 +233,21 @@ body {
     border-radius: 8px;
     padding: 16px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-    border-left: 4px solid;
+    border-top: 4px solid;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .issue-card:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+}
+
+.issue-card.status-open {
+    border-top-color: #28a745;
+}
+
+.issue-card.status-closed {
+    border-top-color: #a29bfe;
 }
 
 .issue-card.priority-high {
